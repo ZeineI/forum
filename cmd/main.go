@@ -21,6 +21,10 @@ func init() {
 
 func main() {
 	sqlLiteDB := database.SqlLiteDB{}
+	if err := sqlLiteDB.Init("cmd/forum.db"); err != nil {
+		log.Println("DB connection: %v", err)
+		return
+	}
 	sessions := session.InitSession()
 	server := server.InitServer(sqlLiteDB, sessions)
 	server.Run()
