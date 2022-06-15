@@ -25,13 +25,13 @@ func (s *Server) MainHandler(w http.ResponseWriter, r *http.Request) {
 		ErrorHandler(w, http.StatusInternalServerError)
 		return
 	}
-	auth, err := s.AuthPostOperations(w, r)
-	if err != nil {
-		log.Println("main handler:", err)
-		ErrorHandler(w, http.StatusInternalServerError)
-		return
-	}
-	if err := mainPage.Execute(w, auth); err != nil {
+	// auth, err := s.AuthPostOperations(w, r)
+	// if err != nil {
+	// 	log.Println("main handler:", err)
+	// 	ErrorHandler(w, http.StatusInternalServerError)
+	// 	return
+	// }
+	if err := mainPage.Execute(w, nil); err != nil {
 		ErrorHandler(w, http.StatusInternalServerError)
 		return
 	}

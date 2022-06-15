@@ -27,6 +27,9 @@ func (s *Server) Run() error {
 
 	//HANDLERS
 	s.mux.HandleFunc("/main", s.MainHandler)
+	s.mux.HandleFunc("/register", s.RegisterHandler)
+	s.mux.HandleFunc("/login", s.SignIn)
+	s.mux.Handle("/login", IsAuthorized(http.HandlerFunc(s.SignIn)))
 
 	fmt.Printf("A server is running on this address: http://localhost:8081/\n")
 	if err := http.ListenAndServe(":8081", s.mux); err != nil {

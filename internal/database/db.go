@@ -3,6 +3,9 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
+
+	models "github.com/ZeineI/forum/internal/models"
 )
 
 type SqlLiteDB struct {
@@ -31,4 +34,39 @@ func (db *SqlLiteDB) Init(dbFile string) (err error) {
 	}
 
 	return nil
+}
+
+func (s *SqlLiteDB) InsertUser(user *models.User) error {
+	result, err := s.db.Exec("INSERT INTO User(email, username, password, place) VALUES($1, $2, $3, $4)", user.Email, user.Username, user.Password, user.Place)
+	if err != nil {
+		return err
+	}
+	log.Println(result.LastInsertId()) // id последнего добавленного объекта
+	log.Println(result.RowsAffected()) // количество добавленных строк
+	return nil
+}
+
+func (s *SqlLiteDB) GetUser(email string) (*models.User, error) {
+	var (
+		usernameDB string
+		passWord   string
+		id         int
+	)
+	rows, err := s.db.Query("SELECT id, username, password FROM User WHERE email=$1", email)
+	if err != nil {
+		return nil, fmt.Errorf("DB Get User Error (query) - %w", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		if err := rows.Scan(&id, &usernameDB, &passWord); err != nil {
+			return nil, fmt.Errorf("DB Get User Error (scan) - %w", err)
+		}
+	}
+	user := &models.User{
+		Id:       id,
+		Email:    email,
+		Username: usernameDB,
+		Password: passWord,
+	}
+	return user, nil
 }
