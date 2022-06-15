@@ -57,7 +57,7 @@ func (s *Server) SignIn(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	userFromDb, err := s.db.GetUser(userInfo.Email)
+	userFromDb, err := s.db.GetUser(userInfo)
 	if err != nil {
 		log.Println("Login: user doesnt exist:", err)
 		ErrorHandler(w, http.StatusInternalServerError) //какая ошибка?

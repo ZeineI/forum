@@ -46,13 +46,13 @@ func (s *SqlLiteDB) InsertUser(user *models.User) error {
 	return nil
 }
 
-func (s *SqlLiteDB) GetUser(email string) (*models.User, error) {
+func (s *SqlLiteDB) GetUser(u *models.User) (*models.User, error) {
 	var (
 		usernameDB string
 		passWord   string
 		id         int
 	)
-	rows, err := s.db.Query("SELECT id, username, password FROM User WHERE email=$1", email)
+	rows, err := s.db.Query("SELECT id, username, password FROM User WHERE email=$1", u.Email)
 	if err != nil {
 		return nil, fmt.Errorf("DB Get User Error (query) - %w", err)
 	}
@@ -64,7 +64,7 @@ func (s *SqlLiteDB) GetUser(email string) (*models.User, error) {
 	}
 	user := &models.User{
 		Id:       id,
-		Email:    email,
+		Email:    u.Email,
 		Username: usernameDB,
 		Password: passWord,
 	}

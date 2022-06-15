@@ -6,5 +6,5 @@ import (
 
 type Storage interface {
 	InsertUser(u *models.User) error
-	GetUser(email string) (*models.User, error)
+	GetUser(u *models.User) (*models.User, error)
 }
