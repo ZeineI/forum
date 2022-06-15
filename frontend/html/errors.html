@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/img/iconka.png" type="image/x-icon">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="./frontend/css/error.css" rel="stylesheet">
+  <title>Error</title>
+</head>
+
+<body>
+  <div class="mainbox">
+    <div class="err">{{ .ErrorNum }}</div>
+    <div class="msg">{{ .CodeText }}<p>Let's go <a class="a" href="/main">home</a> and try from there.</p>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="./frontend/css/main.css" rel="stylesheet">
+    <title>Main</title>
+</head>
+
+<body>
+    <div class="fixed-top">
+        {{ template "header" .}}
+    </div>
+
+    <!-- Filter -->
+    <!-- Filter by tags, by post's author (we do not do by likes - we have Favourite posts page) -->
+    <div class="filterbox" id="filterbox">
+        <form action="/filter" method="post" name="myForm" onsubmit="return validateForm()">
+            <div class="filt">
+                <input class="inp" id="tag" type="text" name="tag" placeholder="category" list="taglist" required>
+                <button id="show" type="submit" class="filter">Filter</button>
+            </div>
+            <!-- from where it takes the suggestions -->
+            <datalist id="taglist">
+                {{ range .Tags}}
+                <option value="{{ . }}">{{ . }}</option>
+                {{ end }}
+            </datalist>
+    </div>
+    <!-- filter end -->
+
+    <div class="boxes">
+        {{range .AllPosts}}
+        <a href="/view/{{ .IdPost }}">
+            <div class="box">
+                <div class="info">
+                    <div class="username">{{ .Username }}</div>
+                    <div class="verticalLine"> </div>
+                    <div class="categories">
+                        {{ range .Category }}
+                        {{ . }}
+                        {{ end }}
+                    </div>
+                </div>
+                {{ if eq .Img true }}
+                <img id="image" src="/uploads/{{ .ImageName }}" alt="Problem with image">
+                {{ else }}
+                {{ end }} 
+                <div class="text">{{ .TextPost }}</div>
+
+            </div>
+            {{ end }}   
+    </div>
+  <!-- Java  -->
+  <script>
+    function validateForm() {
+        var x = document.forms["myForm"]["tag"].value;
+        let result = x.trim();
+        if (x == "" || x == null || result == "" || result == null) {
+            alert("filter field must be filled out");
+            return false;
+        }
+    }
+</script>
+    <!-- Java -->
+    <!-- <script language="javascript">
+        function myFunction() {
+            var x = document.getElementById("image").getAttribute("src");
+            if( x == "/uploads/") {
+                document.getElementById("image").style.visibility="hidden";
+            }
+        }
+    </script> -->
+</body>
+
+</html>

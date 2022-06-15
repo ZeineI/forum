@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="./frontend/css/post.css" rel="stylesheet">
+    <title>Post</title>
+</head>
+
+<body>
+    <div class="fixed-top">
+        {{ template "header" .}}
+    </div>
+
+    <div class="box">
+        <form method="POST" action="/post" name="myForm" enctype="multipart/form-data" >
+
+            <!-- https://stackoverflow.com/questions/1342506/why-is-form-enctype-multipart-form-data-required-when-uploading-a-file -->
+            <!-- added enctype  -->
+            <div class="categories">
+                <!-- <input type="text" id="category" name="category" placeholder="Category" required><br><br> -->
+                {{ range .Tags }}
+                <label>
+                    <input type="checkbox" name="tags" value="{{ . }}">{{ . }}
+                </label>
+                {{ end }}
+            </div>
+            <textarea style="resize:none" rows="3" cols="30" name="input" id="input"
+                placeholder="Text"></textarea><br><br>
+
+            <!-- Add picture -->
+            <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file -->
+            <div class="choose-image">
+                <input type="file" class="image" id="imagepost" name="image-post" accept="image/*">
+            </div>
+            <div class="preview">
+            </div>
+            <!-- Java -->
+            <script>
+                const image = document.querySelector('.image');
+                const preview = document.querySelector('.preview');
+
+                image.addEventListener('change', updateImageDisplay);
+
+                let x = 0
+
+                function updateImageDisplay() {
+                    const curFiles = image.files;
+                    if (x > 0) {
+                        alert("You can select only 1 image");
+                        const newImage = document.querySelector('img');
+                        const newPara = document.querySelector('p');
+                        for (const file of curFiles) {
+                        let s = returnFileSize(file.size)
+                        if (file.size >= 20000000) {
+                            newPara.textContent = `Size of picture more than 20 MB not allowed, current file size -  ${s}.`;
+                        } else {
+                            newImage.src = URL.createObjectURL(file);
+                            newPara.textContent = `${s}`;
+                            x = 1
+                        }
+                        return false
+                    }
+                }
+        
+                    for (const file of curFiles) {
+                        let s = returnFileSize(file.size)
+                        const para = document.createElement('p');
+                        if (file.size >= 20000000) {
+                            para.textContent = `Size of picture more than 20 MB not allowed, current file size -  ${s}.`;
+                            preview.appendChild(para);
+                        } else {
+                            const imagepost = document.createElement('img');
+                            imagepost.src = URL.createObjectURL(file);
+                            para.textContent = `${s}`;
+                            preview.appendChild(imagepost);
+                            preview.appendChild(para);
+                            x = 1
+                        }
+                    }
+                }
+
+                function returnFileSize(number) {
+                    if (number < 1000) {
+                        return number + 'bytes';
+                    } else if (number >= 1000 && number < 1000000) {
+                        return (number / 1000).toFixed(1) + 'KB';
+                    } else if (number >= 1000000) {
+                        return (number / 1000000).toFixed(1) + 'MB';
+                    }
+                }
+
+
+            </script>
+            <!-- <script>
+                $("#image").on("change", function () {
+                    if ($("#image")[0].files.length > 1) {
+                        alert("You can select only 1 image");
+                    } else {
+                        $("#imageUploadForm").submit();
+                    }
+                });
+            </script> -->
+
+            <button type="submit" name="submit" value="submit" class="post">Post</button>
+        </form>
+    </div>
+</body>
+
+</html>
+
+<!-- https://stackoverflow.com/questions/9231529/image-upload-form-not-working-when-i-use-enctype-multipart-form-data -->

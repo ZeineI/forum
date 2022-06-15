@@ -9,7 +9,8 @@ import (
 	"github.com/ZeineI/forum/internal/session"
 )
 
-func init() {
+func main() {
+
 	file, err := os.OpenFile("logs/logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
@@ -17,15 +18,17 @@ func init() {
 
 	defer file.Close()
 	log.SetOutput(file)
-}
 
-func main() {
 	sqlLiteDB := database.SqlLiteDB{}
-	if err := sqlLiteDB.Init("cmd/forum.db"); err != nil {
+	if err := sqlLiteDB.Init("forum.db"); err != nil {
 		log.Println("DB connection: %v", err)
 		return
 	}
-	sessions := session.InitSession()
+
+	sessions := session.InitSession(sqlLiteDB.DB)
 	server := server.InitServer(sqlLiteDB, sessions)
-	server.Run()
+
+	if err := server.Run(); err != nil {
+		return
+	}
 }

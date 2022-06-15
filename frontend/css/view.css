@@ -1,0 +1,151 @@
+body {
+  background-color: #efefef;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Header */
+
+.fixed-top {
+  background-color: #262626;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  padding-top: 0;
+}
+
+a.navbar-brand {
+  float: left;
+  display: block;
+  color: #faf6f6;
+  text-align: center;
+  padding: 7px 16px;
+  text-decoration: none;
+  margin: 0%;
+  }
+  
+  a.nav-link {
+  float: right;
+  display: block;
+  color: #faf6f6;
+  text-align: center;
+  padding: 7px 16px;
+  text-decoration: none;
+  }
+
+  button.create-post {
+    background-color: #dc6f2f;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    cursor: pointer;
+    font-size: 16px;
+    height: 30px;
+    outline: 0;
+    text-align: center;
+  }
+
+  form {
+    display: inline;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  display: inline;
+  color: #faf6f6;
+  text-align: center;
+  padding: 7px 16px;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: serif;
+  font-size: 16px;
+}
+
+  /* Header end */
+
+  .box {
+    background-color: white;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: 70px 10px;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+   }
+
+   .username {
+    color: #000000;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 0;
+    padding: 0 10px 0 0; 
+    line-height: 16px;
+  }
+  
+  .category {
+    color: #999999;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 0;
+    overflow: auto;
+  }
+
+textarea {
+  width: 70%;
+  height: auto;
+}
+
+/* buttons like dislike */
+
+.rank {
+  display: flex;
+ flex-direction: row;
+ margin-top: 10px;
+ margin-bottom: 10px;
+ justify-content: right;
+}
+
+.rating {
+  background-color: #dc6f2f;
+  color: #eee;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.rankComment {
+  display: flex;
+ flex-direction: row;
+ justify-content: right;
+}
+
+.ratingComment {
+  background-color: #dc6f2f;
+  color: #eee;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* buttons end */
+
+.horizontalLine {
+  border-top: thin solid #8f8f8f;
+  padding-top: 5px;
+  margin-top: 5px ;
+}
+
+button.comment {
+  background-color: white;
+color: orangered;
+}

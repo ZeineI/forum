@@ -1,0 +1,29 @@
+<link href="./frontend/css/main.css" rel="stylesheet">
+{{ define "header" }}
+{{ if eq .IsAuth true }}
+<nav>
+    <div class="container">
+        <a class="navbar-brand" href="/main">Home</a>
+            <form method="GET" action="/post">
+                <button type="submit" class="create-post">Create Post</button>
+            </form>
+            <a class="nav-link" href="/favourite">Favourite posts</a>
+            <a class="nav-link" href="/myPosts">My posts</a>
+            <form method="POST" action="/logout">
+                <input type="hidden" name="extra_submit_param" value="extra_submit_value">
+                <button type="submit" name="submit_param" value="submit_value" class="link-button">
+                    Log out
+                  </button>
+            </form>
+    </div>
+</nav>
+{{ else }}
+<nav>
+    <div class="container">
+        <a class="navbar-brand" href="/main">Home</a>
+            <a class="nav-link" href="/register">Sign up</a>
+            <a class="nav-link" href="/login">Log in</a>
+    </div>
+</nav>
+{{ end }}
+{{ end }}

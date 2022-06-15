@@ -5,68 +5,105 @@ import (
 	"fmt"
 	"log"
 
-	models "github.com/ZeineI/forum/internal/models"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type SqlLiteDB struct {
-	db *sql.DB
+	DB *sql.DB
 }
 
 func (db *SqlLiteDB) Init(dbFile string) (err error) {
-	db.db, err = sql.Open("sqlite3", dbFile)
+	db.DB, err = sql.Open("sqlite3", dbFile)
 	if err != nil {
 		return fmt.Errorf("DB: sql open %w", err)
 	}
 
-	err = db.db.Ping()
+	err = db.DB.Ping()
 	if err != nil {
 		return fmt.Errorf("DB: sql ping %w", err)
 	}
 
-	if _, err = db.db.Exec(`CREATE TABLE IF NOT EXISTS User (
+	if _, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS User (
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		email TEXT UNIQUE, 
 		username TEXT UNIQUE NOT NULL, 
 		password TEXT,
 		place TEXT
 	)`); err != nil {
-		return fmt.Errorf("DB: User table create %w", err)
-	}
-
-	return nil
-}
-
-func (s *SqlLiteDB) InsertUser(user *models.User) error {
-	result, err := s.db.Exec("INSERT INTO User(email, username, password, place) VALUES($1, $2, $3, $4)", user.Email, user.Username, user.Password, user.Place)
-	if err != nil {
+		log.Println("create table(user) error: %v", err)
 		return err
 	}
-	log.Println(result.LastInsertId()) // id последнего добавленного объекта
-	log.Println(result.RowsAffected()) // количество добавленных строк
-	return nil
-}
 
-func (s *SqlLiteDB) GetUser(u *models.User) (*models.User, error) {
-	var (
-		usernameDB string
-		passWord   string
-		id         int
-	)
-	rows, err := s.db.Query("SELECT id, username, password FROM User WHERE email=$1", u.Email)
-	if err != nil {
-		return nil, fmt.Errorf("DB Get User Error (query) - %w", err)
+	if _, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS Cookies (
+		session_id TEXT,
+		user_id TEXT UNIQUE,
+		FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE
+	)`); err != nil {
+		log.Println("create table(cookie) error: %v", err)
+		return err
 	}
-	defer rows.Close()
-	for rows.Next() {
-		if err := rows.Scan(&id, &usernameDB, &passWord); err != nil {
-			return nil, fmt.Errorf("DB Get User Error (scan) - %w", err)
-		}
+
+	if _, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS Posts (
+		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+		author_id TEXT NOT NULL,  
+		bodyPost TEXT,
+		image TEXT,
+		FOREIGN KEY(author_Id) REFERENCES User(id) ON DELETE CASCADE,
+		CONSTRAINT CK_one_is_not_null CHECK (bodyPost IS NOT NULL OR image IS NOT NULL) 
+	)`); err != nil {
+		log.Println("create table(post) error: %v", err)
+		return err
 	}
-	user := &models.User{
-		Id:       id,
-		Email:    u.Email,
-		Username: usernameDB,
-		Password: passWord,
+	// above chnaged - bodypost from Not Null and added imageName
+	// added constraint - at least text or image must be there
+
+	if _, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS Comments (
+		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+		commentAuthor_id INTEGER,
+		commentPost_id INTEGER, 
+		bodyComment TEXT NOT NULL,
+		FOREIGN KEY(commentAuthor_id) REFERENCES User(id) ON DELETE CASCADE,
+		FOREIGN KEY(commentPost_id) REFERENCES Posts(id) ON DELETE CASCADE
+	)`); err != nil {
+		log.Println("create table(comments) error: %v", err)
+		return err
 	}
-	return user, nil
+
+	if _, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS PostRaiting (
+		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+		symbol TEXT NOT NULL,
+		post_Id INTEGER,
+		LikeUser_Id INTEGER, 
+		FOREIGN KEY(post_Id) REFERENCES Posts(id) ON DELETE CASCADE,
+		FOREIGN KEY(LikeUser_Id) REFERENCES User(id) ON DELETE CASCADE
+	)`); err != nil {
+		log.Println("create table(postrating) error: %v", err)
+		return err
+	}
+
+	if _, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS CommentRaiting (
+		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+		symbolComment TEXT NOT NULL,
+		commentUser_Id INTEGER,
+		comment_Id INTEGER,
+		postID INTEGER,
+		FOREIGN KEY(commentUser_Id) REFERENCES User(id) ON DELETE CASCADE,
+		FOREIGN KEY(comment_Id) REFERENCES Comments(id) ON DELETE CASCADE,
+		FOREIGN KEY(postID) REFERENCES Posts(id) ON DELETE CASCADE
+	)`); err != nil {
+		log.Println("create table(commentrating) error: %v", err)
+		return err
+	}
+
+	if _, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS Tags (
+		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+		tag TEXT NOT NULL,
+		postID INTEGER,
+		FOREIGN KEY(postID) REFERENCES Posts(id) ON DELETE CASCADE
+	)`); err != nil {
+		log.Println("create table(commentrating) error: %v", err)
+		return err
+	}
+
+	return nil
 }

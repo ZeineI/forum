@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Tourney:wght@300&display=swap');
+body {
+  background-color:black;
+
+}
+.mainbox {
+  text-align: center;
+  padding: 10%;
+  color:white;
+}
+.err {
+  font-size: 150px;
+}   
+.msg {
+  font-size: 40px;
+}
+
+.a {
+  color:rgb(216, 31, 77);
+}

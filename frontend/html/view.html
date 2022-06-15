@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="./frontend/css/view.css" rel="stylesheet">
+    <title>View</title>
+</head>
+
+<body>
+    <div class="fixed-top">
+        {{ template "header" .}}
+    </div>
+    <div class="box">
+
+        <div class="main">
+                {{ if eq .Post.Img true }}
+                <img src="/uploads/{{ .Post.ImageName }}" alt="Problem with image">
+                {{ else }}
+                {{ end }} 
+            <div class="postText">
+                {{.Post.TextPost}}
+            </div>
+            <div class="category">
+                {{ range .Post.Category }}
+                {{ . }}
+                {{ end }}
+            </div>
+
+            <div class="info">
+                <div class="username">{{ .Post.Username }}</div>
+                <div class="rank">
+                    <form method="POST" action="/like">
+                        <button type="submit" name="like" value="like" class="rating">Like</button> {{.LikePost}}
+                    </form>
+
+                    <form method="POST" action="/dislike">
+                        <button type="submit" name="dislike" value="dislike" class="rating">Dislike</button>
+                        {{.DislikePost}}
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <form method="POST" action="/postcomment" name="myForm" onsubmit="return validateForm()">
+            <!-- here added NAME and onsubmit="return validateForm()" -->
+            <textarea rows="1" cols="30" name="input" id="input" required></textarea>
+            <button class="comment" type="submit" name="submit" value="submit">comment</button>
+            <!-- check that comment is not empty (not only "required" in HTML), but that not just enters and spaces -->
+            <!-- https://www.w3schools.com/howto/howto_js_validation_empty_input.asp -->
+            <!-- Java  -->
+            <script>
+                function validateForm() {
+                    var x = document.forms["myForm"]["input"].value;
+                    let result = x.trim();
+                    if (x == "" || x == null || result == "" || result == null) {
+                        alert("comment field must be filled out");
+                        return false;
+                    }
+                }
+            </script>
+        </form>
+        <div class="comments">
+            {{range .AllCommentsOnePost}}
+            <div class="horizontalLine"> </div>
+            <div class="onecomment">
+                {{.Username}} :
+                {{.TextComment}}
+            </div>
+            <div class="rankComment">
+                <form method="POST" action="/commentLike">
+                    <button class="ratingComment" type="submit" name="CommentLike" value="{{ .IdComment }}">+</button>
+                    {{ .Like }}
+                </form>
+                <form method="POST" action="/commentDislike">
+                    <button class="ratingComment" type="submit" name="CommentDislike"
+                        value="{{ .IdComment }}">−</button> {{ .Dislike }}
+                </form>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</body>
+
+</html>

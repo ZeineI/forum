@@ -1,0 +1,94 @@
+body {
+    background-color: #efefef;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Header */
+
+.fixed-top {
+    background-color: #262626;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    padding-top: 0;
+  }
+  
+  a.navbar-brand {
+    float: left;
+    display: block;
+    color: #faf6f6;
+    text-align: center;
+    padding: 7px 16px;
+    text-decoration: none;
+    margin: 0%;
+    }
+    
+    a.nav-link {
+    float: right;
+    display: block;
+    color: #faf6f6;
+    text-align: center;
+    padding: 7px 16px;
+    text-decoration: none;
+    }
+  
+    button.create-post {
+      background-color: #dc6f2f;
+      border-radius: 12px;
+      border: 0;
+      box-sizing: border-box;
+      color: #eee;
+      cursor: pointer;
+      font-size: 16px;
+      height: 30px;
+      outline: 0;
+      text-align: center;
+    }
+
+    form {
+        display: inline;
+    }
+
+    .link-button {
+      background: none;
+      border: none;
+      display: inline;
+      color: #faf6f6;
+      text-align: center;
+      padding: 7px 16px;
+      text-decoration: none;
+      cursor: pointer;
+      font-family: serif;
+      font-size: 16px;
+    }
+  
+    /* Header end */
+  
+    .box {
+        margin: 70px 10px;
+    }
+
+    input::placeholder, textarea::placeholder {
+        font-size: 16px;
+    }
+
+    button.post {
+        background-color: white;
+      color: orangered;
+      border-radius: 12px;
+      border: 0;
+      box-sizing: border-box;
+      cursor: pointer;
+      font-size: 16px;
+      height: 30px;
+      outline: 0;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      }
+
+      input {
+        padding-bottom: 20px
+      }

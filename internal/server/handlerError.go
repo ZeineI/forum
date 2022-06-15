@@ -1,14 +1,14 @@
 package server
 
 import (
+	"html/template"
 	"net/http"
-	"text/template"
 
-	models "github.com/ZeineI/forum/internal/models"
+	"github.com/ZeineI/forum/internal/models"
 )
 
 func ErrorHandler(w http.ResponseWriter, code int) {
-	tmp, err := template.ParseFiles("./static/errors.html")
+	tmp, err := template.ParseFiles("./frontend/html/errors.html")
 	if err != nil {
 		http.Error(w, "500: Internal Server Error", http.StatusInternalServerError)
 		return
