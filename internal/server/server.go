@@ -27,46 +27,6 @@ func (s *Server) Run() error {
 
 	//HANDLERS
 	s.mux.HandleFunc("/main", s.MainHandler)
-	// s.mux.HandleFunc("/register", s.RegisterHandler)
-	// s.mux.HandleFunc("/login", s.LoginHandler)
-	// //github
-	// s.mux.HandleFunc("/login/githubAuth", s.GithubAuth)
-	// s.mux.HandleFunc("/login/github/callback", s.GithubCallback)
-	// s.mux.HandleFunc("/loggedin", func(w http.ResponseWriter, r *http.Request) {
-	// 	s.LoggedinHandler(w, r, "")
-	// })
-	// //google
-	// s.mux.HandleFunc("/login/googleAuth", s.GoogleAuth)
-	// s.mux.HandleFunc("/login/google/callback", s.GoogleCallback)
-	// // s.mux.HandleFunc("/loggedin", func(w http.ResponseWriter, r *http.Request) {
-	// // 	s.LoggedinHandler(w, r, "")
-	// // })
-
-	// // //added
-	// s.mux.Handle("/post", s.MiddlewareLoginCheck(http.HandlerFunc(s.PostHandler)))
-	// s.mux.Handle("/postcomment", s.MiddlewareLoginCheck(http.HandlerFunc(s.CommentInvisibleHandler)))
-	// s.mux.HandleFunc("/view/", s.ViewHandler)
-
-	// //rating
-	// s.mux.Handle("/like", s.MiddlewareLoginCheck(http.HandlerFunc(s.PostLikeHandler)))
-	// s.mux.Handle("/dislike", s.MiddlewareLoginCheck(http.HandlerFunc(s.PostDislikeHandler)))
-
-	// //comment rating
-	// s.mux.Handle("/commentDislike", s.MiddlewareLoginCheck(http.HandlerFunc(s.CommentDislikeHandler)))
-	// s.mux.Handle("/commentLike", s.MiddlewareLoginCheck(http.HandlerFunc(s.CommentLikeHandler)))
-
-	// //add
-	// s.mux.Handle("/favourite", s.MiddlewareLoginCheck(http.HandlerFunc(s.FavouritePosts)))
-	// s.mux.Handle("/myPosts", s.MiddlewareLoginCheck(http.HandlerFunc(s.MyPosts)))
-
-	// //filter
-	// s.mux.HandleFunc("/filter", s.Filter)
-
-	// //logout
-	// s.mux.HandleFunc("/logout", s.LogOut)
-
-	//if no such page
-	s.mux.HandleFunc("/", s.Check)
 
 	fmt.Printf("A server is running on this address: http://localhost:8081/\n")
 	if err := http.ListenAndServe(":8081", s.mux); err != nil {

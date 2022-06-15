@@ -7,8 +7,8 @@ import (
 )
 
 func (s *Server) MainHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/main" {
-		log.Println("main handler url error")
+	if r.URL.Path != "/" {
+		log.Println("URL: main page error")
 		ErrorHandler(w, http.StatusBadRequest)
 		return
 	}
@@ -17,8 +17,8 @@ func (s *Server) MainHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	files := []string{
-		"./static/mainPage.html",
-		"./static/header.html",
+		"./frontend/html/header.html",
+		"./frontend/html/mainPage.html",
 	}
 	mainPage, err := template.ParseFiles(files...)
 	if err != nil {

@@ -3,7 +3,8 @@ package server
 import (
 	"net/http"
 	"text/template"
-	// "github.com/ZeineI/forum/internal/models"
+
+	models "github.com/ZeineI/forum/internal/models"
 )
 
 func ErrorHandler(w http.ResponseWriter, code int) {
@@ -12,7 +13,7 @@ func ErrorHandler(w http.ResponseWriter, code int) {
 		http.Error(w, "500: Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	content := &ErrorStruct{
+	content := &models.ErrorStruct{
 		ErrorNum: code,
 		CodeText: http.StatusText(code),
 	}
