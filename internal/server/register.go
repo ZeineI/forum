@@ -9,6 +9,7 @@ import (
 	"text/template"
 
 	"github.com/ZeineI/forum/internal/models"
+	"github.com/ZeineI/forum/pkg"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -27,7 +28,7 @@ func (s *Server) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	registerPage, err := template.ParseFiles("static/register.html")
+	registerPage, err := template.ParseFiles("./frontend/html/register.html")
 	if err != nil {
 		ErrorHandler(w, http.StatusInternalServerError)
 		return
@@ -60,7 +61,7 @@ func (s *Server) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 			case "e-mail":
 				user.Email = v[0]
 			case "password":
-				hash, err := GeneratePassword(v[0])
+				hash, err := pkg.GeneratePassword(v[0])
 				if err != nil {
 					log.Println(err)
 					ErrorHandler(w, http.StatusInternalServerError)
@@ -86,7 +87,7 @@ func (s *Server) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 			InCorrectRegister(registerPage, w, "email is incorret")
 			return
 		}
-		if !CheckPasswords(user.Confirm, user.Password) || !IsValidPassword(user.Confirm) {
+		if !pkg.CheckPasswords(user.Confirm, user.Password) || !IsValidPassword(user.Confirm) {
 			w.WriteHeader(400)
 			InCorrectRegister(registerPage, w, "password is incorrect")
 			log.Println("password is not confirmed or incorrect format")

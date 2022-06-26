@@ -54,8 +54,6 @@ func (db *SqlLiteDB) Init(dbFile string) (err error) {
 		log.Println("create table(post) error: %v", err)
 		return err
 	}
-	// above chnaged - bodypost from Not Null and added imageName
-	// added constraint - at least text or image must be there
 
 	if _, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS Comments (
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 

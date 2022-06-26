@@ -9,6 +9,7 @@ import (
 	"net/url"
 
 	"github.com/ZeineI/forum/internal/models"
+	"github.com/ZeineI/forum/pkg"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -67,7 +68,7 @@ func (s *Server) LoginHandler(w http.ResponseWriter, r *http.Request) {
 			ErrorHandler(w, http.StatusInternalServerError) //какая ошибка?
 			return
 		}
-		if !CheckPasswords(userInfo.Password, userFromDb.Password) {
+		if !pkg.CheckPasswords(userInfo.Password, userFromDb.Password) {
 			log.Println("Incorrect password. Refresh page and try again")
 			if err := loginPage.Execute(w, "password is inccorect"); err != nil {
 				ErrorHandler(w, http.StatusInternalServerError)
